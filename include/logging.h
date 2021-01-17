@@ -1,24 +1,29 @@
 #pragma once
 #include <stdio.h>
 #include <defines.h>
+#include <config.h>
 
+#if enableAnsiColors
+#define debugLabel debugColor debugText end
+#define infoLabel infoColor infoText end
+#define warningLabel warningColor warningText end
+#define errorLabel errorColor errorText end
+#define fatalLabel fatalColor fatalText end
 
-// log level labels
-#define debugLabel green "[debug]" end
-#define infoLabel cyan "[info ]" end
-#define warningLabel yellow "[warn ]" end
-#define errorLabel red "[error]" end
-#define fatalLabel redBg "[fatal]" end
+#else
+#define debugLabel debugText
+#define infoLabel infoText
+#define warningLabel warningText
+#define errorLabel errorText
+#define fatalLabel fatalText
 
-// current loglevel, options are: debug, info, warning, error, fatal
-#define logLevel debug
-
-// log formatting [time] label: message
-#define logFmt "[%s] %s: %s\n"
+#endif
 
 extern FILE *logIO;
 
 void setLogOutput(FILE *logOutput);
+void setLogFile(char *path);
+void setLogLevel(int logLevel);
 
 void logDebug(const char* msg,...);
 void logInfo(const char* msg,...);

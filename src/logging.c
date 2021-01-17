@@ -5,6 +5,9 @@
 #include <stdarg.h>
 #include <stdlib.h>
 
+int runtimeLogLevel = 0;
+
+FILE *logIO;
 
 // fills str with yy/mm/dd hh:mm:ss
 void getDateTime(char (*str)[16]){
@@ -21,10 +24,27 @@ void getDateTime(char (*str)[16]){
         2,tInfo->tm_sec);
 }
 
-// must be called before using logging
+// must be called before using logging, sets log output stream
 void setLogOutput(FILE *logOutput){
     logIO = logOutput;
 }
+// opens the logfile in append mode, if one does not exist it will be created
+void setLogFile(char *path){
+    setLogOutput(fopen(path,"a"));
+}
+void setLogLevel(int logLevel){
+    #if logLevel!=runtime
+    if(logIO==NULL){
+        logIO = stdout;
+    }
+    logFatal("Runtime Log Level Overrided by Static Log Level!\n \
+              Recompile With staticLogLevel Set to runtime to Allow for Runtime changing of log level, or set staticLogLevel to Desired Level");
+    return;
+    #endif
+    runtimeLogLevel = logLevel;
+    return;
+}
+
 
 void _logHelper(const char* msgFmt, const char* logLabel, va_list *valist){
 
@@ -46,8 +66,12 @@ void _logHelper(const char* msgFmt, const char* logLabel, va_list *valist){
 
 // external logging functions
 void logDebug(const char* msgFmt,...){
-    #if logLevel > debug
+    #if staticLogLevel > debug
         return;
+    #elif staticLogLevel == ignored
+    if(runtimeLogLevel > debug){
+        return;
+    }
     #endif
         va_list valist;
         va_start(valist,msgFmt);
@@ -58,8 +82,12 @@ void logDebug(const char* msgFmt,...){
 }
 
 void logInfo(const char* msgFmt,...){
-    #if logLevel > info
+    #if staticLogLevel > info
         return;
+    #elif staticLogLevel == ignored
+    if(runtimeLogLevel > info){
+        return;
+    }
     #endif
         va_list valist;
         va_start(valist,msgFmt);
@@ -69,8 +97,12 @@ void logInfo(const char* msgFmt,...){
 }
 
 void logWarn(const char* msgFmt,...){
-    #if logLevel > warning
+    #if staticLogLevel > warning
         return;
+    #elif staticLogLevel == ignored
+    if(runtimeLogLevel > warning){
+        return;
+    }
     #endif
         va_list valist;
         va_start(valist,msgFmt);
@@ -80,8 +112,12 @@ void logWarn(const char* msgFmt,...){
 }
 
 void logErr(const char* msgFmt,...){
-    #if logLevel > error
+    #if staticLogLevel > error
         return;
+    #elif staticLogLevel == ignored
+    if(runtimeLogLevel > error){
+        return;
+    }
     #endif
         va_list valist;
         va_start(valist,msgFmt);
@@ -101,4 +137,3 @@ void logFatal(const char* msgFmt,...){
 
 }
 
-FILE *logIO;
