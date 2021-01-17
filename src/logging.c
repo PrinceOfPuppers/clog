@@ -58,8 +58,17 @@ void _logHelper(const char* msgFmt, const char* logLabel, va_list *valist){
     char t[16];
 
     getDateTime(&t);
+
+    #if fmtArgs == 0
+    fprintf(logIO,logFmt,msg);
+    #elif fmtArgs == 1
+    fprintf(logIO,logFmt,logLabel,msg);
+    #elif fmtArgs == 2
+    fprintf(logIO,logFmt,t,msg);
+    #elif fmtArgs == 3
     fprintf(logIO,logFmt,t,logLabel,msg);
-        
+    #endif
+
     free(msg);
     return;
 }
