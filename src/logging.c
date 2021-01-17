@@ -15,13 +15,13 @@ void getDateTime(char (*str)[16]){
     time(&t);
     struct tm * tInfo = localtime ( &t );
     
-    sprintf(*str,"%0*i/%0*i/%0*i %0*i:%0*i:%0*i",
-        2,tInfo->tm_year-100,
-        2,tInfo->tm_mon+1,
-        2,tInfo->tm_wday,
-        2,tInfo->tm_hour,
-        2,tInfo->tm_min,
-        2,tInfo->tm_sec);
+    sprintf(*str,dateTimeFmt,
+        tInfo->tm_year-100,
+        tInfo->tm_mon+1,
+        tInfo->tm_mday,
+        tInfo->tm_hour,
+        tInfo->tm_min,
+        tInfo->tm_sec);
 }
 
 // must be called before using logging, sets log output stream
@@ -46,7 +46,7 @@ void setLogLevel(int logLevel){
 }
 
 
-void _logHelper(const char* msgFmt, const char* logLabel, va_list *valist){
+void _logHelper(const char* fileName, int lineNumber, const char* msgFmt, const char* logLabel, va_list *valist){
 
     // puts variable args into msgFmt 
     char *msg;
@@ -59,22 +59,15 @@ void _logHelper(const char* msgFmt, const char* logLabel, va_list *valist){
 
     getDateTime(&t);
 
-    #if fmtArgs == 0
-    fprintf(logIO,logFmt,msg);
-    #elif fmtArgs == 1
-    fprintf(logIO,logFmt,logLabel,msg);
-    #elif fmtArgs == 2
-    fprintf(logIO,logFmt,t,msg);
-    #elif fmtArgs == 3
-    fprintf(logIO,logFmt,t,logLabel,msg);
-    #endif
+    fprintf(logIO,logFmt,t,logLabel,msg,fileName,lineNumber);
+
 
     free(msg);
     return;
 }
 
 // external logging functions
-void logDebug(const char* msgFmt,...){
+void _logDebug(const char* fileName, int lineNumber,const char* msgFmt,...){
     #if staticLogLevel > debug
         return;
     #elif staticLogLevel == ignored
@@ -84,13 +77,13 @@ void logDebug(const char* msgFmt,...){
     #endif
         va_list valist;
         va_start(valist,msgFmt);
-        _logHelper(msgFmt,debugLabel,&valist);
+        _logHelper(fileName,lineNumber,msgFmt,debugLabel,&valist);
         va_end(valist);
 
     return;
 }
 
-void logInfo(const char* msgFmt,...){
+void _logInfo(const char* fileName, int lineNumber,const char* msgFmt,...){
     #if staticLogLevel > info
         return;
     #elif staticLogLevel == ignored
@@ -100,12 +93,12 @@ void logInfo(const char* msgFmt,...){
     #endif
         va_list valist;
         va_start(valist,msgFmt);
-        _logHelper(msgFmt,infoLabel,&valist);
+        _logHelper(fileName,lineNumber,msgFmt,infoLabel,&valist);
         va_end(valist);
     return;
 }
 
-void logWarn(const char* msgFmt,...){
+void _logWarn(const char* fileName, int lineNumber,const char* msgFmt,...){
     #if staticLogLevel > warning
         return;
     #elif staticLogLevel == ignored
@@ -115,12 +108,12 @@ void logWarn(const char* msgFmt,...){
     #endif
         va_list valist;
         va_start(valist,msgFmt);
-        _logHelper(msgFmt,warningLabel,&valist);
+        _logHelper(fileName,lineNumber,msgFmt,warningLabel,&valist);
         va_end(valist);
     return;
 }
 
-void logErr(const char* msgFmt,...){
+void _logErr(const char* fileName, int lineNumber,const char* msgFmt,...){
     #if staticLogLevel > error
         return;
     #elif staticLogLevel == ignored
@@ -130,16 +123,16 @@ void logErr(const char* msgFmt,...){
     #endif
         va_list valist;
         va_start(valist,msgFmt);
-        _logHelper(msgFmt,errorLabel,&valist);
+        _logHelper(fileName, lineNumber,msgFmt,errorLabel,&valist);
         va_end(valist);
     return;
 }
 
-void logFatal(const char* msgFmt,...){
+void _logFatal(const char* fileName, int lineNumber,const char* msgFmt,...){
 
     va_list valist;
     va_start(valist,msgFmt);
-    _logHelper(msgFmt,fatalLabel,&valist);
+    _logHelper(fileName,lineNumber,msgFmt,fatalLabel,&valist);
     va_end(valist);
 
     exit(1);

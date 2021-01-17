@@ -19,14 +19,22 @@
 
 #endif
 
+
+
 extern FILE *logIO;
 
 void setLogOutput(FILE *logOutput);
 void setLogFile(char *path);
 void setLogLevel(int logLevel);
 
-void logDebug(const char* msg,...);
-void logInfo(const char* msg,...);
-void logWarn(const char* msg,...);
-void logErr(const char* msg,...);
-void logFatal(const char* msg,...);
+void _logDebug(const char* fileName,int lineNum,const char* msg,...);
+void _logInfo(const char* fileName,int lineNum,const char* msg,...);
+void _logWarn(const char* fileName,int lineNum,const char* msg,...);
+void _logErr(const char* fileName,int lineNum,const char* msg,...);
+void _logFatal(const char* fileName,int lineNum,const char* msg,...);
+
+#define logDebug(msg,...) _logDebug(__FILE__,__LINE__,msg,__VA_ARGS__);
+#define logInfo(msg,...) _logInfo(__FILE__,__LINE__,msg,__VA_ARGS__);
+#define logWarn(msg,...) _logWarn(__FILE__,__LINE__,msg,__VA_ARGS__);
+#define logErr(msg,...) _logErr(__FILE__,__LINE__,msg,__VA_ARGS__);
+#define logFatal(msg,...) _logFatal(__FILE__,__LINE__,msg,__VA_ARGS__);

@@ -1,6 +1,7 @@
 #pragma once
 #include <defines.h>
 
+
 #define enableAnsiColors 1
 
 // log level colors (grey, magenta, blue, cyan, green, yellow, red, redBg)
@@ -22,32 +23,12 @@
 // setting staticLogLevel runtime will allow log level to be set at runtime (however this is less efficent)
 #define staticLogLevel ignored
 
+// time formatting
+#define dateFmt year"/"month"/"day
+#define timeFmt hour":"min":"sec
 
-// Determines what args are present in logFmt
-// 0: Message
-// 1: level Message
-// 2: Time Message
-// 3: Time Level Message
-#define fmtArgs 3
+#define dateTimeFmt dateFmt " " timeFmt
 
 
-// log formats
-#if fmtArgs == 0
-//              message 
-#define logFmt "%s\n"
-
-#elif fmtArgs == 1
-//              label: message 
-#define logFmt "%s: %s\n"
-
-#elif fmtArgs == 2
-//              [time]: message 
-#define logFmt "[%s]: %s\n"
-
-#elif fmtArgs == 3
-//              [time] label: message 
-#define logFmt "[%s] %s: %s\n"
-
-#endif
-
-
+// full log formatting
+#define logFmt "["date_time"] ["file_name":"line_number"] "log_level":"message"\n"

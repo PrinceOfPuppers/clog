@@ -20,3 +20,18 @@
 #define warning 2
 #define error 3
 #define fatal 4
+
+
+#define year "%1$02d"
+#define month "%2$02d"
+#define day "%3$02d"
+#define hour "%4$02d"
+#define min "%5$02d"
+#define sec "%6$02d"
+
+#define date_time  "%1$s" 
+#define log_level "%2$s" 
+#define message "%3$s" 
+#define file_name "%4$s" 
+#define line_number "%5$i" 
+
