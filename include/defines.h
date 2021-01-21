@@ -3,6 +3,7 @@
 
 //ansi colors
 #define grey "\e[0;90m"
+#define white "\e[0;97m"
 #define magenta  "\e[35m"
 #define blue "\e[34m"
 #define cyan "\e[96m"
@@ -32,6 +33,7 @@
 #define date_time  "%1$s" 
 #define log_level "%2$s" 
 #define message "%3$s" 
-#define file_name "%4$s" 
+#define filename "%4$s" 
 #define line_number "%5$i" 
+
 

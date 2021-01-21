@@ -30,5 +30,10 @@
 #define dateTimeFmt dateFmt " " timeFmt
 
 
+
 // full log formatting
-#define logFmt "["date_time"] ["file_name":"line_number"] "log_level":"message"\n"
+
+// example using all data
+//#define logFmt "["date_time"] ["filename":"line_number"] "log_level":"message"\n"
+
+#define logFmt "["date_time"] ["filename":"line_number"] "log_level":"message"\n"
