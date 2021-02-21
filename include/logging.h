@@ -35,6 +35,6 @@ void _logFatal(const char* fileName,int lineNum,const char* msg,...);
 
 #define logDebug(msg,...) _logDebug(__FILE__,__LINE__,msg, ##__VA_ARGS__);
 #define logInfo(msg,...) _logInfo(__FILE__,__LINE__,msg, ##__VA_ARGS__);
-#define logWarn(msg,...) _logWarn(__FILE__,__LINE__,msg, ##,__VA_ARGS__);
+#define logWarn(msg,...) _logWarn(__FILE__,__LINE__,msg, ##__VA_ARGS__);
 #define logErr(msg,...) _logErr(__FILE__,__LINE__,msg, ##__VA_ARGS__);
 #define logFatal(msg,...) _logFatal(__FILE__,__LINE__,msg, ##__VA_ARGS__);
