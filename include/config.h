@@ -19,8 +19,8 @@
 #define fatalText "[fatal]"
 
 
-// compile time loglevel, options are: debug, info, warning, error, fatal
-// setting staticLogLevel runtime will allow log level to be set at runtime (however this is less efficent)
+// compile time loglevel, options are: debug, info, warning, error, fatal and ignored
+// setting staticLogLevel ignored will allow log level to be set at runtime (however this is less efficent)
 #define staticLogLevel ignored
 
 // time formatting

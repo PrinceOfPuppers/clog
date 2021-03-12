@@ -1,5 +1,4 @@
 #include <logging.h>
-
 int main(){
     setLogFile("testing/build/testing.log");
     setLogLevel(debug);

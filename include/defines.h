@@ -13,15 +13,6 @@
 #define redBg "\e[0;30m\e[41m"
 #define end "\e[0m"
 
-// log level numbers, runtime means log level is not known at compile time
-// and can be dynamically set
-#define ignored -1
-#define debug 0
-#define info 1
-#define warning 2
-#define error 3
-#define fatal 4
-
 
 #define year "%1$02d"
 #define month "%2$02d"

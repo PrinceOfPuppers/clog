@@ -1,9 +1,28 @@
 #define _GNU_SOURCE
 
 #include <logging.h>
+#include <config.h>
 #include <time.h>
 #include <stdarg.h>
 #include <stdlib.h>
+
+
+#if enableAnsiColors
+#define debugLabel debugColor debugText end
+#define infoLabel infoColor infoText end
+#define warningLabel warningColor warningText end
+#define errorLabel errorColor errorText end
+#define fatalLabel fatalColor fatalText end
+
+#else
+#define debugLabel debugText
+#define infoLabel infoText
+#define warningLabel warningText
+#define errorLabel errorText
+#define fatalLabel fatalText
+
+#endif
+
 
 int runtimeLogLevel = 0;
 
@@ -138,5 +157,3 @@ void _logFatal(const char* fileName, int lineNumber,const char* msgFmt,...){
     exit(1);
 
 }
-
-#include "undefines.h"

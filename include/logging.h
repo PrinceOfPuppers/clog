@@ -1,27 +1,18 @@
 #pragma once
 #include <stdio.h>
-#include <defines.h>
-#include <config.h>
-
-#if enableAnsiColors
-#define debugLabel debugColor debugText end
-#define infoLabel infoColor infoText end
-#define warningLabel warningColor warningText end
-#define errorLabel errorColor errorText end
-#define fatalLabel fatalColor fatalText end
-
-#else
-#define debugLabel debugText
-#define infoLabel infoText
-#define warningLabel warningText
-#define errorLabel errorText
-#define fatalLabel fatalText
-
-#endif
-
-
 
 extern FILE *logIO;
+
+
+// log level numbers, ignored means log level is not known at compile time
+// and can be dynamically set
+#define ignored -1
+#define debug 0
+#define info 1
+#define warning 2
+#define error 3
+#define fatal 4
+
 
 void setLogOutput(FILE *logOutput);
 void setLogFile(char *path);
