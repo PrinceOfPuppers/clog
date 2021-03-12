@@ -1,7 +1,7 @@
 #pragma once
 #include <defines.h>
 
-
+// good to disable when logging to file
 #define enableAnsiColors 1
 
 // log level colors (grey, magenta, blue, cyan, green, yellow, red, redBg)

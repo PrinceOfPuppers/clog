@@ -26,7 +26,13 @@
 
 int runtimeLogLevel = 0;
 
-FILE *logIO;
+FILE *logIO ;
+
+// initalizes logIO to stdout, must be wrapped in constructor because stdout is not constant
+static void initLogIO(void) __attribute__((constructor)); 
+static void initLogIO(void){
+    logIO = stdout;
+}
 
 // fills str with yy/mm/dd hh:mm:ss
 void getDateTime(char (*str)[16]){
@@ -43,10 +49,10 @@ void getDateTime(char (*str)[16]){
         tInfo->tm_sec);
 }
 
-// must be called before using logging, sets log output stream
 void setLogOutput(FILE *logOutput){
     logIO = logOutput;
 }
+
 // opens the logfile in append mode, if one does not exist it will be created
 void setLogFile(char *path){
     setLogOutput(fopen(path,"a"));
