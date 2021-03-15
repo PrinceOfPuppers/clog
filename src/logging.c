@@ -1,7 +1,7 @@
 #define _GNU_SOURCE
 
 #include <logging.h>
-#include <config.h>
+#include <log_config.h>
 #include <time.h>
 #include <stdarg.h>
 #include <stdlib.h>
@@ -162,28 +162,4 @@ void _logFatal(const char* fileName, int lineNumber,const char* msgFmt,...){
 
     exit(1);
 
-}
-
-// reads fileinto buffer upto next delimiter and returns it
-char *getToDelim(FILE *fp,char delim){
-    char c;
-
-    int reallocInc = 10; // determines size increase each realloc
-    char * result = malloc((reallocInc+1)*sizeof(char));
-    int i = 0;
-    
-    while(1){
-        c = getc(fp);
-        if (c == EOF || c == delim){
-            break;
-        }
-        if (i%reallocInc == 0){
-            result = (char *) realloc(result,(i*reallocInc+1)*sizeof(char));
-        }
-        result[i] = c;
-        i++;
-    }
-
-    result[i] = '\0';
-    return result;
 }

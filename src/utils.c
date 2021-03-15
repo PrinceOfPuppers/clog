@@ -1,7 +1,7 @@
 #include <stdlib.h>
-#include <utils.h>
-#include <stdio.h>
+#include <log_utils.h>
 #include <logging.h>
+#include <stdio.h>
 
 #define formatter_float_0 "%g"
 #define formatter_float_1 "&%g"
@@ -33,44 +33,40 @@
 #define star_2 * star_1
 #define star(n) star_##n
 
-#define DECLARE_ARR_STR_FUNC(type, indirection, derefAmount)                                                                \
-    char *arrStr_##type##_##indirection(type * star(indirection) arr, int len)                                              \
-{                                                                                                                           \
-    int buffReallocSize = len;                                                                                              \
-    int buffSize = buffReallocSize;                                                                                         \
-    char *buffer = malloc(buffSize*sizeof(char));                                                                           \
-    buffer[0] = '[';                                                                                                        \
-    int i;                                                                                                                  \
-    int writeIndex = 1;                                                                                                     \
-    int sizeNeeded;                                                                                                         \
-    int reallocDiff = buffReallocSize;                                                                                      \
-    int headRoom;                                                                                                           \
-    for(i = 0; i < len; i++){                                                                                               \
-        while(1){                                                                                                           \
+#define DECLARE_ARR_STR_FUNC(type, indirection, derefAmount)                                                                    \
+    char *_arrStr_##type##_##indirection(type * star(indirection) arr, int len)                                                 \
+{                                                                                                                               \
+    int buffReallocSize = len;                                                                                                  \
+    int buffSize = buffReallocSize;                                                                                             \
+    char *buffer = malloc(buffSize*sizeof(char));                                                                               \
+    buffer[0] = '[';                                                                                                            \
+    int i;                                                                                                                      \
+    int writeIndex = 1;                                                                                                         \
+    int sizeNeeded;                                                                                                             \
+    int reallocDiff = buffReallocSize;                                                                                          \
+    int headRoom;                                                                                                               \
+    for(i = 0; i < len; i++){                                                                                                   \
+        while(1){                                                                                                               \
             sizeNeeded = snprintf(buffer+writeIndex, buffSize-writeIndex, formatter(type,indirection), star(derefAmount) arr[i]); \
-            logDebug(formatter(type,indirection),arr[i]);                                                                   \
-            logDebug(buffer);                                                                                               \
-            headRoom = buffSize - writeIndex - sizeNeeded + 1;                                                              \
-            logDebug("writeIndex: %i buffSize: %i sizeNeeded: %i headRoom: %i", writeIndex,buffSize,sizeNeeded, headRoom);  \
-            if (headRoom < reallocDiff) {                                                                                   \
-                logDebug("Reallocing") ;                                                                                    \
-                buffer = realloc(buffer,buffSize+buffReallocSize + sizeNeeded);                                             \
-                buffSize+=buffReallocSize + sizeNeeded;                                                                     \
-                continue;                                                                                                   \
-            };                                                                                                              \
-            if (headRoom < 0){                                                                                              \
-                continue;                                                                                                   \
-            };                                                                                                              \
-            break;                                                                                                          \
-        }                                                                                                                   \
-        writeIndex += sizeNeeded;                                                                                           \
-        buffer[writeIndex] = ',';                                                                                           \
-        buffer[writeIndex+1] = ' ';                                                                                         \
-        writeIndex += 2;                                                                                                    \
-    }                                                                                                                       \
-    buffer[writeIndex - 2] = ']';                                                                                           \
-    buffer[writeIndex - 1] = '\0';                                                                                          \
-    return buffer;                                                                                                          \
+            headRoom = buffSize - writeIndex - sizeNeeded + 1;                                                                  \
+            if (headRoom < reallocDiff) {                                                                                       \
+                buffer = realloc(buffer,buffSize+buffReallocSize + sizeNeeded);                                                 \
+                buffSize+=buffReallocSize + sizeNeeded;                                                                         \
+                continue;                                                                                                       \
+            };                                                                                                                  \
+            if (headRoom < 0){                                                                                                  \
+                continue;                                                                                                       \
+            };                                                                                                                  \
+            break;                                                                                                              \
+        }                                                                                                                       \
+        writeIndex += sizeNeeded;                                                                                               \
+        buffer[writeIndex] = ',';                                                                                               \
+        buffer[writeIndex+1] = ' ';                                                                                             \
+        writeIndex += 2;                                                                                                        \
+    }                                                                                                                           \
+    buffer[writeIndex - 2] = ']';                                                                                               \
+    buffer[writeIndex - 1] = '\0';                                                                                              \
+    return buffer;                                                                                                              \
 }
 
 DECLARE_ARR_STR_FUNC(int,0,0);

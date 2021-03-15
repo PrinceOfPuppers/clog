@@ -1,5 +1,6 @@
 #pragma once
 #include <stdio.h>
+#include <log_utils.h>
 
 extern FILE *logIO;
 
@@ -29,3 +30,16 @@ void _logFatal(const char* fileName,int lineNum,const char* msg,...);
 #define logWarn(msg,...) _logWarn(__FILE__,__LINE__,msg, ##__VA_ARGS__);
 #define logErr(msg,...) _logErr(__FILE__,__LINE__,msg, ##__VA_ARGS__);
 #define logFatal(msg,...) _logFatal(__FILE__,__LINE__,msg, ##__VA_ARGS__);
+
+
+#define _logArr(level,arr,len) do { \
+    char* aStr = arrStr(arr,len); \
+    log##level(aStr); \
+    free(aStr); \
+} while (0)
+
+#define logDebugArr(arr,len) _logArr(Debug,arr,len)
+#define logInfoArr(arr,len) _logArr(Info,arr,len)
+#define logWarnArr(arr,len) _logArr(Warn,arr,len)
+#define logErrArr(arr,len) _logArr(Err,arr,len)
+#define logFatalArr(arr,len) _logArr(Fatal,arr,len)

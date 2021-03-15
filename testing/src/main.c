@@ -1,10 +1,21 @@
 #include <logging.h>
-#include <utils.h>
 #include <stdlib.h>
+
+#define testArr(type,d1,d2,d3,d4) do{ \
+    type arr[4] =  {d1, d2, d3, d4}; \
+    logInfoArr(arr,4); \
+    type **ref = malloc(4*sizeof(type*)); \
+    ref[0] = &arr[0]; \
+    ref[1] = &arr[1]; \
+    ref[2] = &arr[2]; \
+    ref[3] = &arr[3]; \
+    logInfoArr(ref,4); \
+    free(ref); \
+}while(0)
 
 int main(){
     //setLogOutput(stdout); Not needed, output defaults to stdout
-    setLogLevel(info);
+    setLogLevel(debug);
     logDebug("message from %s","debug");
     logInfo("message from %s","info");
     logWarn("message from %s","warning");
@@ -13,7 +24,7 @@ int main(){
 
 
     setLogFile("testing/build/testing.log");
-    setLogLevel(info);
+    setLogLevel(debug);
     logDebug("message from %s","debug");
     logInfo("message from %s","info");
     logWarn("message from %s","warning");
@@ -23,17 +34,13 @@ int main(){
     // test stdout fatal log
     setLogOutput(stdout);
 
-    int q = 4;
-    float arr[4] =  {0.1, 1.1, 2.1, 3.1};
-    float **ref = malloc(4*sizeof(float*));
-    ref[0] = &arr[0];
-    ref[1] = &arr[1];
-    ref[2] = &arr[2];
-    ref[3] = &arr[3];
+    testArr(float,0.1f, 1.1f, 2.1f, 3.1f);
+    testArr(double,0.1, 1.1, 2.1, 3.1);
+
+    testArr(int,5,6,7,8);
+    testArr(long,(long)1,(long)2,(long)3,(long)4);
 
     #include <string.h>
-
-    int intArr[4] = {0,1,2,3};
 
     char *hello = malloc(6*sizeof(char));
     strcpy(hello,"hello");
@@ -54,14 +61,14 @@ int main(){
     strArr[2] = are;
     strArr[3] = you;
 
+    logWarnArr(hello,5);
+    logErrArr(strArr,4);
 
-    printf("%f\n",*ref[3]);
-
-    printf("%s\n",arrStr(arr,q));
-    printf("%s\n",arrStr(ref,q));
-    printf("%s\n",arrStr(strArr,4));
-    printf("%s\n",arrStr(hello,5));
-    printf("%s\n",arrStr(intArr,4));
-
+    free(hello);
+    free(how);
+    free(are);
+    free(you);
+    
     logFatal("message from %s","fatal");
+
 }

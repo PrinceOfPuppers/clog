@@ -1,5 +1,5 @@
 #pragma once
-#include <defines.h>
+#include <log_defines.h>
 
 // good to disable when logging to file
 #define enableAnsiColors 1
