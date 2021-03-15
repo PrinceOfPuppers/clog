@@ -9,7 +9,9 @@ PROGRAM = clog
 CFLAGS= -Wall -g -std=gnu99
 
 INC = -Iinclude
+
 FILES = $(wildcard $(SRC)/*.c)
+FILENAMES = $(basename $(notdir $(wildcard $(SRC)/*.c) ))
 
 # Testing exclusive
 TESTDIR = testing
@@ -18,13 +20,16 @@ TESTBUILD = build
 TESTPROGRAM = test
 TESTLIB = -L . -l:lib/clog.a
 
-
 all: debug
 
 debug: 
 	@mkdir -p $(LIB)
-	$(CC) $(CFLAGS) -c $(FILES) $(INC) -o $(LIB)/$(PROGRAM).o
-	ar rcs $(LIB)/$(PROGRAM).a $(LIB)/$(PROGRAM).o 
+
+	for path in $(FILENAMES); do \
+		$(CC) $(CFLAGS) -c $(SRC)/$$path.c $(INC) -o $(LIB)/$$path.o; \
+	done
+
+	ar rcs $(LIB)/$(PROGRAM).a $(wildcard $(LIB)/*.o)
 
 test: debug
 
