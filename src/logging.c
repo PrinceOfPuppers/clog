@@ -35,7 +35,7 @@ static void initLogIO(void){
 }
 
 // fills str with yy/mm/dd hh:mm:ss
-void getDateTime(char (*str)[16]){
+void getDateTime(char (*str)[17]){
     time_t t;
     time(&t);
     struct tm * tInfo = localtime ( &t );
@@ -80,7 +80,7 @@ void _logHelper(const char* fileName, int lineNumber, const char* msgFmt, const 
         exit(137); // unable to allocate memory
     }
 
-    char t[16];
+    char t[17];
 
     getDateTime(&t);
 
