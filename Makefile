@@ -6,7 +6,7 @@ SRC = src
 LIB = lib
 
 PROGRAM = clog
-CFLAGS= -Wall -g -std=gnu99
+CFLAGS= -Wall -std=gnu99
 
 INC = -Iinclude
 
@@ -20,16 +20,21 @@ TESTBUILD = build
 TESTPROGRAM = test
 TESTLIB = -L . -l:lib/clog.a
 
-all: debug
 
-debug: 
+all: compile
+
+# compile but with debug flag
+debug: CFLAGS += -g
+debug: compile
+
+compile:
 	@mkdir -p $(LIB)
 
 	for path in $(FILENAMES); do \
 		$(CC) $(CFLAGS) -c $(SRC)/$$path.c $(INC) -o $(LIB)/$$path.o; \
 	done
 
-	ar rcs $(LIB)/$(PROGRAM).a $(wildcard $(LIB)/*.o)
+	ar rcs $(LIB)/$(PROGRAM).a $(addprefix $(LIB)/, $(addsuffix .o,$(FILENAMES)))
 
 test: debug
 

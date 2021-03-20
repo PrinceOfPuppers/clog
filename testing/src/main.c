@@ -31,7 +31,7 @@ int main(){
     logErr("message from %s","error");
 
 
-    // test stdout fatal log
+    // test stdout
     setLogOutput(stdout);
 
     testArr(float,0.1f, 1.1f, 2.1f, 3.1f);
@@ -68,7 +68,4 @@ int main(){
     free(how);
     free(are);
     free(you);
-    
-    logFatal("message from %s","fatal");
-
 }
